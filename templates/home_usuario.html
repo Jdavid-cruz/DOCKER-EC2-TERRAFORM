@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil - CloudGram</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='home_usuario_style.css') }}">
+</head>
+<body class="profile-body">
+  <div class="container profile-container">
+    <!-- Header del perfil -->
+    <div class="profile-header text-center mb-5">
+      <i class="fas fa-user-circle profile-avatar"></i>
+      <h1 class="profile-username">{{ username }}</h1>
+      <p class="profile-bio">Bienvenido a tu espacio profesional en CloudGram</p>
+    </div>
+
+    <!-- Tarjeta de información -->
+    <div class="profile-card card shadow-sm mb-5">
+      <div class="card-body">
+        <div class="profile-info-item">
+          <i class="fas fa-phone profile-icon"></i>
+          <div>
+            <h5 class="info-label">Teléfono</h5>
+            <p class="info-value">{{ phone }}</p>
+          </div>
+        </div>
+        <div class="profile-info-item">
+          <i class="fas fa-envelope profile-icon"></i>
+          <div>
+            <h5 class="info-label">Correo electrónico</h5>
+            <p class="info-value">{{ email }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de publicaciones -->
+    <div class="upload-section">
+      <h3 class="section-title text-center mb-4">
+        <i class="fas fa-cloud-upload-alt me-2"></i>Crear nueva publicación
+      </h3>
+      
+      <div class="upload-guide text-center mb-4">
+        <p>Puedes subir hasta <strong>3 imágenes</strong> y <strong>1 video</strong> por publicación</p>
+      </div>
+
+      <div id="alertContainer"></div>
+
+      <div class="upload-actions text-center mb-4">
+        <input type="file" id="mediaInput" accept="image/*,video/*" multiple class="d-none">
+        <button id="uploadButton" class="btn btn-primary upload-btn">
+          <i class="fas fa-images me-2"></i>Seleccionar archivos
+        </button>
+      </div>
+
+      <div id="previewContainer" class="preview-grid"></div>
+
+      <div class="post-caption mt-4">
+        <label for="commentInput" class="form-label">Descripción de la publicación</label>
+        <textarea id="commentInput" class="form-control caption-input" 
+                  placeholder="Describe tu proyecto o publicación (máximo 100 caracteres)" 
+                  maxlength="100" rows="3"></textarea>
+        <div class="char-counter"><span id="charCount">0</span>/100 caracteres</div>
+      </div>
+
+      <div class="text-center mt-4">
+        <button id="publishButton" class="btn btn-success publish-btn">
+          <i class="fas fa-paper-plane me-2"></i>Publicar en CloudGram
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Elementos del DOM
+    const uploadButton = document.getElementById('uploadButton');
+    const mediaInput = document.getElementById('mediaInput');
+    const previewContainer = document.getElementById('previewContainer');
+    const publishButton = document.getElementById('publishButton');
+    const alertContainer = document.getElementById('alertContainer');
+    const commentInput = document.getElementById('commentInput');
+    const charCount = document.getElementById('charCount');
+    
+    // Variables de estado
+    let selectedFiles = [];
+    let fileIdCounter = 0;
+
+    // Eventos
+    uploadButton.addEventListener('click', () => mediaInput.click());
+    commentInput.addEventListener('input', updateCharCount);
+
+    // Funciones
+    function updateCharCount() {
+      charCount.textContent = commentInput.value.length;
+    }
+
+    function showMessage(message, type = 'danger') {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+      alertDiv.role = "alert";
+      alertDiv.innerHTML = `
+        <i class="fas ${type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle'} me-2"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      alertContainer.appendChild(alertDiv);
+      setTimeout(() => alertDiv.remove(), 5000);
+    }
+
+    function updateCounts() {
+      const imageCount = selectedFiles.filter(item => item.file.type.startsWith('image')).length;
+      const videoCount = selectedFiles.filter(item => item.file.type.startsWith('video')).length;
+      return { imageCount, videoCount };
+    }
+
+    function createPreviewElement(fileObj) {
+      const { file, id } = fileObj;
+      const previewItem = document.createElement('div');
+      previewItem.className = 'preview-item';
+      previewItem.dataset.id = id;
+
+      let previewContent;
+      if (file.type.startsWith('image/')) {
+        previewContent = document.createElement('img');
+        previewContent.src = URL.createObjectURL(file);
+        previewContent.className = 'preview-image';
+      } else if (file.type.startsWith('video/')) {
+        previewContent = document.createElement('video');
+        previewContent.src = URL.createObjectURL(file);
+        previewContent.className = 'preview-video';
+        previewContent.controls = true;
+      }
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'btn btn-sm btn-danger remove-btn';
+      removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+      removeBtn.addEventListener('click', () => {
+        selectedFiles = selectedFiles.filter(item => item.id !== id);
+        previewItem.remove();
+      });
+
+      previewItem.appendChild(previewContent);
+      previewItem.appendChild(removeBtn);
+      return previewItem;
+    }
+
+    mediaInput.addEventListener('change', (event) => {
+      const files = Array.from(event.target.files);
+      
+      files.forEach(file => {
+        const counts = updateCounts();
+        
+        if (file.type.startsWith('image/') && counts.imageCount >= 3) {
+          showMessage("Límite alcanzado: máximo 3 imágenes por publicación");
+          return;
+        }
+        
+        if (file.type.startsWith('video/') && counts.videoCount >= 1) {
+          showMessage("Límite alcanzado: solo 1 video por publicación");
+          return;
+        }
+
+        const fileObj = { file, id: fileIdCounter++ };
+        selectedFiles.push(fileObj);
+        previewContainer.appendChild(createPreviewElement(fileObj));
+      });
+
+      mediaInput.value = '';
+    });
+
+    publishButton.addEventListener('click', async () => {
+      const comment = commentInput.value.trim();
+      
+      if (!comment) {
+        showMessage("Por favor, escribe una descripción para tu publicación", "warning");
+        return;
+      }
+
+      if (selectedFiles.length === 0) {
+        showMessage("Debes seleccionar al menos un archivo para publicar", "warning");
+        return;
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append("comment", comment);
+        selectedFiles.forEach(fileObj => formData.append("media_files", fileObj.file));
+
+        publishButton.disabled = true;
+        publishButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Publicando...';
+
+        const response = await fetch("/publicar", { method: "POST", body: formData });
+
+        if (response.ok) {
+          window.location.href = "/principal";
+        } else {
+          throw new Error("Error en la publicación");
+        }
+      } catch (error) {
+        showMessage("Error al publicar. Por favor, inténtalo de nuevo.", "danger");
+        publishButton.disabled = false;
+        publishButton.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Publicar en CloudGram';
+      }
+    });
+  </script>
+</body>
+</html>

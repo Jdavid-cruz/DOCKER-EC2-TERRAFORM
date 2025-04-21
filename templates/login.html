@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Profesional - CloudGram</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login_style.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-box">
+        <div class="login-header">
+            <i class="fas fa-cloud cloud-icon"></i>
+            <h2>Acceso a <span>CloudGram</span></h2>
+            <p class="subtitle">Ingrese sus credenciales para acceder a su panel</p>
+        </div>
+
+        <form action="{{ url_for('login') }}" method="post" class="login-form">
+            <!-- Correo electrónico -->
+            <div class="form-group">
+                <label for="email" class="form-label">Correo Corporativo</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="usuario@empresa.com" required>
+                </div>
+                <small class="error-message" id="emailError">Por favor ingrese un correo válido</small>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="form-group">
+                <label for="password" class="form-label">Contraseña de Acceso</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required minlength="8">
+                    <i class="fas fa-eye toggle-password"></i>
+                </div>
+                <small class="error-message" id="passwordError">Mínimo 8 caracteres requeridos</small>
+            </div>
+
+            <!-- Opciones -->
+            <div class="form-options">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Mantener sesión activa</label>
+                </div>
+                <a href="#" class="forgot-password">¿Problemas con el acceso?</a>
+            </div>
+
+            <!-- Botón de login -->
+            <button type="submit" class="btn login-btn">Acceder a la Plataforma</button>
+
+            <!-- Enlace para registrarse -->
+            <div class="register-link">
+                ¿Nuevo en CloudGram? <a href="{{ url_for('register') }}">Crear cuenta profesional</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        document.querySelector('.toggle-password').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            this.classList.toggle('fa-eye-slash');
+            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        });
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            let valid = true;
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            
+            // Email validation
+            if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+                email.classList.add('input-error');
+                document.getElementById('emailError').style.display = 'block';
+                valid = false;
+            } else {
+                email.classList.remove('input-error');
+                document.getElementById('emailError').style.display = 'none';
+            }
+            
+            // Password validation
+            if (password.value.length < 8) {
+                password.classList.add('input-error');
+                document.getElementById('passwordError').style.display = 'block';
+                valid = false;
+            } else {
+                password.classList.remove('input-error');
+                document.getElementById('passwordError').style.display = 'none';
+            }
+            
+            if (!valid) e.preventDefault();
+        });
+    </script>
+</body>
+</html>

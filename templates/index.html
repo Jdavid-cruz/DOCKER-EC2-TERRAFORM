@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudGram - Conecta, Comparte, Inspira</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index_style.css') }}">
+</head>
+<body>
+    <!-- Navbar profesional -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-cloud"></i> CloudGram
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Características</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contacto</a>
+                    </li>
+                </ul>
+                <div class="ms-lg-3 mt-3 mt-lg-0">
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary me-2">Iniciar Sesión</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section moderna -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1>Conecta con el mundo a través de tus imágenes</h1>
+                    <p class="lead">CloudGram es la plataforma donde desarrolladores y profesionales de la nube comparten sus proyectos, ideas y experiencias.</p>
+                    <div class="d-flex gap-3 mt-4">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                            Comenzar ahora <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                        <a href="#features" class="btn btn-outline-secondary btn-lg">
+                            Saber más
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" 
+                         alt="Interfaz de CloudGram" 
+                         class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de características -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Potencia tu presencia en la nube</h2>
+                <p class="lead">Descubre cómo CloudGram puede ayudarte a mostrar tus habilidades técnicas</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-primary">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Portafolio Técnico</h3>
+                        <p>Exhibe tus proyectos de desarrollo y arquitecturas cloud con descripciones técnicas detalladas.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-success">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>Networking Profesional</h3>
+                        <p>Conecta con otros desarrolladores, reclutadores y empresas tecnológicas.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon bg-info">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Analíticas de Proyectos</h3>
+                        <p>Mide el impacto de tus publicaciones con métricas detalladas sobre visitas e interacciones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección demostración -->
+    <section class="demo-section bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                         alt="Dashboard CloudGram" 
+                         class="img-fluid rounded shadow">
+                </div>
+                <div class="col-lg-6">
+                    <h2>Muestra tus habilidades cloud como nunca antes</h2>
+                    <p>Con CloudGram puedes:</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check-circle text-primary"></i> Documentar implementaciones técnicas</li>
+                        <li><i class="fas fa-check-circle text-primary"></i> Compartir diagramas de arquitectura</li>
+                        <li><i class="fas fa-check-circle text-primary"></i> Publicar tutoriales y guías prácticas</li>
+                        <li><i class="fas fa-check-circle text-primary"></i> Destacar certificaciones y logros</li>
+                    </ul>
+                    <a href="{{ url_for('register') }}" class="btn btn-outline-primary mt-3">
+                        Crear mi perfil técnico
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header text-center mb-5">
+                <h2>Lo que dicen nuestros usuarios</h2>
+                <p class="lead">Desarrolladores y arquitectos cloud que usan CloudGram</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"CloudGram me ayudó a mostrar mis proyectos AWS de manera profesional y conseguí mi actual trabajo gracias a ello."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Usuario" class="rounded-circle">
+                            <div>
+                                <h5>María González</h5>
+                                <span>Arquitecta Cloud</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"La mejor plataforma para desarrolladores que quieren destacar sus habilidades técnicas con proyectos reales."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuario" class="rounded-circle">
+                            <div>
+                                <h5>Carlos Mendoza</h5>
+                                <span>DevOps Engineer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"He encontrado colaboradores para mis proyectos open source y he aprendido mucho de la comunidad."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Usuario" class="rounded-circle">
+                            <div>
+                                <h5>Ana Torres</h5>
+                                <span>Backend Developer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section bg-primary text-white">
+        <div class="container text-center py-5">
+            <h2 class="mb-4">¿Listo para potenciar tu carrera en la nube?</h2>
+            <p class="lead mb-5">Únete a miles de desarrolladores que ya están mostrando sus habilidades en CloudGram</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                    Registrarse gratis
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                    Iniciar sesión
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer profesional -->
+    <footer class="footer">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5><i class="fas fa-cloud"></i> CloudGram</h5>
+                    <p>La plataforma para desarrolladores y profesionales cloud que quieren mostrar sus habilidades técnicas y conectar con la industria.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5>Producto</h5>
+                    <ul>
+                        <li><a href="#">Características</a></li>
+                        <li><a href="#">Planes</a></li>
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">Integraciones</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4 mb-md-0">
+                    <h5>Compañía</h5>
+                    <ul>
+                        <li><a href="#">Nosotros</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreras</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Suscríbete a nuestro newsletter</h5>
+                    <p>Recibe las últimas noticias y actualizaciones sobre CloudGram.</p>
+                    <form class="subscribe-form">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Tu email">
+                            <button class="btn btn-secondary" type="submit">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-md-0">&copy; 2023 CloudGram. Todos los derechos reservados.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="footer-links">
+                            <li><a href="#">Términos de servicio</a></li>
+                            <li><a href="#">Política de privacidad</a></li>
+                            <li><a href="#">Cookies</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feed Principal - CloudGram</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='principal_style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="feed-body">
+  <div class="feed-container">
+    <!-- Header del feed -->
+    <header class="feed-header">
+      <div class="header-content">
+        <i class="fas fa-cloud feed-logo"></i>
+        <h1>CloudGram Feed</h1>
+        <p class="header-subtitle">Conecta con la comunidad profesional cloud</p>
+      </div>
+      
+      <div class="feed-actions">
+        <a href="{{ url_for('home_usuario') }}" class="btn btn-primary">
+          <i class="fas fa-plus-circle"></i> Nueva Publicación
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+        </a>
+      </div>
+    </header>
+
+    <!-- Publicaciones -->
+    <main class="feed-posts">
+      <!-- Mensajes predefinidos (ejemplos) -->
+      <article class="post-card">
+        <div class="post-header">
+          <div class="user-info">
+            <i class="fas fa-user-circle user-avatar"></i>
+            <div>
+              <h3 class="username">Juan Pérez</h3>
+              <small class="post-time">Hace 2 horas</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="post-content">
+          <p>Compartiendo mi última implementación de arquitectura serverless en AWS. ¡Feedback bienvenido!</p>
+          
+          <div class="post-media">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" 
+                 alt="Diagrama de arquitectura cloud" 
+                 class="post-image">
+          </div>
+        </div>
+        
+        <div class="post-actions">
+          <button class="btn btn-sm btn-outline-primary reaction-btn">
+            <i class="fas fa-thumbs-up"></i> Me gusta
+          </button>
+          <button class="btn btn-sm btn-outline-secondary reaction-btn">
+            <i class="fas fa-comment"></i> Comentar
+          </button>
+          <button class="btn btn-sm btn-outline-secondary reaction-btn">
+            <i class="fas fa-share"></i> Compartir
+          </button>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-header">
+          <div class="user-info">
+            <i class="fas fa-user-circle user-avatar"></i>
+            <div>
+              <h3 class="username">María López</h3>
+              <small class="post-time">Hace 5 horas</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="post-content">
+          <p>Acabo de completar mi certificación en Azure Solutions Architect. ¡Todo el esfuerzo valió la pena!</p>
+          
+          <div class="post-media">
+            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=765&q=80" 
+                 alt="Certificación Azure" 
+                 class="post-image">
+          </div>
+        </div>
+        
+        <div class="post-actions">
+          <button class="btn btn-sm btn-outline-primary reaction-btn">
+            <i class="fas fa-thumbs-up"></i> Me gusta
+          </button>
+          <button class="btn btn-sm btn-outline-secondary reaction-btn">
+            <i class="fas fa-comment"></i> Comentar
+          </button>
+          <button class="btn btn-sm btn-outline-secondary reaction-btn">
+            <i class="fas fa-share"></i> Compartir
+          </button>
+        </div>
+      </article>
+
+      <!-- Publicaciones dinámicas desde la base de datos -->
+      {% for pub in publicaciones %}
+        {% set username = pub[0] %}
+        {% set comment = pub[1] %}
+        {% set media_files = pub[2] | fromjson %}
+        {% set created_at = pub[3] %}
+        
+        <article class="post-card">
+          <div class="post-header">
+            <div class="user-info">
+              <i class="fas fa-user-circle user-avatar"></i>
+              <div>
+                <h3 class="username">{{ username }}</h3>
+                <small class="post-time">{{ created_at }}</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="post-content">
+            <p>{{ comment }}</p>
+            
+            {% if media_files %}
+              <div class="post-media">
+                {% for file in media_files %}
+                  <img src="{{ file }}" alt="Publicación de {{ username }}" class="post-image">
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="post-actions">
+            <button class="btn btn-sm btn-outline-primary reaction-btn">
+              <i class="fas fa-thumbs-up"></i> Me gusta
+            </button>
+            <button class="btn btn-sm btn-outline-secondary reaction-btn">
+              <i class="fas fa-comment"></i> Comentar
+            </button>
+            <button class="btn btn-sm btn-outline-secondary reaction-btn">
+              <i class="fas fa-share"></i> Compartir
+            </button>
+          </div>
+        </article>
+      {% endfor %}
+    </main>
+
+    <!-- Paginación -->
+    <div class="pagination">
+      {% if page > 1 %}
+        <a href="{{ url_for('principal', page=page-1) }}" class="btn btn-pagination">
+          <i class="fas fa-chevron-left"></i> Anterior
+        </a>
+      {% endif %}
+      
+      <span class="page-info">Página {{ page }} de {{ total_pages }}</span>
+      
+      {% if page < total_pages %}
+        <a href="{{ url_for('principal', page=page+1) }}" class="btn btn-pagination">
+          Siguiente <i class="fas fa-chevron-right"></i>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Modal para imágenes -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <img id="modalImage" src="" alt="Imagen ampliada" class="modal-image">
+      
+      <div class="image-actions">
+        <button class="btn btn-like">
+          <i class="fas fa-thumbs-up"></i> <span id="likeCount">0</span>
+        </button>
+        <button class="btn btn-comment">
+          <i class="fas fa-comment"></i> Comentar
+        </button>
+        <button class="btn btn-download">
+          <i class="fas fa-download"></i> Descargar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="feed-footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <i class="fas fa-cloud footer-logo"></i>
+        <h3>CloudGram</h3>
+        <p>La plataforma profesional para desarrolladores cloud</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Términos de servicio</a>
+        <a href="#">Política de privacidad</a>
+        <a href="#">Contacto</a>
+        <a href="#">Soporte técnico</a>
+      </div>
+      
+      <div class="social-links">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2023 CloudGram. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Modal de imágenes
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      const closeModal = document.querySelector('.close-modal');
+      const likeBtn = document.querySelector('.btn-like');
+      const likeCount = document.getElementById('likeCount');
+      
+      // Abrir modal al hacer click en imágenes
+      document.querySelectorAll('.post-image').forEach(img => {
+        img.addEventListener('click', function() {
+          modal.style.display = 'block';
+          modalImg.src = this.src;
+        });
+      });
+      
+      // Cerrar modal
+      closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+      });
+      
+      // Cerrar al hacer click fuera
+      window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+      
+      // Funcionalidad de "me gusta"
+      likeBtn.addEventListener('click', function() {
+        let currentLikes = parseInt(likeCount.textContent);
+        likeCount.textContent = currentLikes + 1;
+        this.classList.toggle('liked');
+      });
+      
+      // Funcionalidad de reacciones en posts
+      document.querySelectorAll('.reaction-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (this.querySelector('.fa-thumbs-up')) {
+            this.classList.toggle('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

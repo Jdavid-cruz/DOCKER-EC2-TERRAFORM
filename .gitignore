@@ -1,0 +1,19 @@
+# Ignorar archivos sensibles
+.env
+*.pem
+*.ppk
+*.zip
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+
+# Python
+__pycache__/
+*.pyc
