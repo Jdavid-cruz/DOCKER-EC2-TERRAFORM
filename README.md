@@ -35,6 +35,6 @@ Cómo desplegarlo
 
     Subir tu app Flask al EC2 y correrla con Docker o Gunicorn
 
-¿Por qué hice esto?
 
-Quiero trabajar como administrador Linux y arquitecto de soluciones en AWS, así que este tipo de proyectos me sirven para demostrar que sé montar infra en la nube de forma segura, ordenada y funcional. Lo hice todo paso a paso, sin atajos, y controlando bien cada parte del proceso.
+  El objetivo de este proyecto fue construir una arquitectura en AWS compuesta por EC2, RDS y un Bastion Host, aplicando buenas prácticas de seguridad, organización y acceso controlado. Lo desarrollé paso a paso, sin atajos, asegurándome de entender y dominar cada parte del proceso. Es una muestra clara de cómo despliego infraestructura cloud de forma funcional y segura utilizando Terraform.
+
