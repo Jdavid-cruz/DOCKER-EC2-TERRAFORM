@@ -20,16 +20,6 @@ Toda la infraestructura está automatizada con Terraform, y me aseguré de segui
 
     Terraform para desplegar todo como infraestructura como código
 
-Estructura del proyecto
-
-cloudgram/
-├── main.tf                 -> Todo el despliegue de la infraestructura en AWS
-├── app.py                  -> (Opcional) Código de la app si lo añado
-├── Dockerfile              -> (Opcional) Si la app corre con Docker
-├── templates/              -> HTMLs de la app
-├── static/                 -> Archivos CSS o JS
-├── .gitignore
-└── README.md
 
 Cómo desplegarlo
 
